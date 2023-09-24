@@ -21,26 +21,34 @@ namespace Lab.APIGateway.Pages
 
         public async Task<IActionResult> OnGet()
         {
-            var ProductHttpClient = _httpClientFactory.CreateClient("ProductMicroservice");
-            var OrderHttpClient = _httpClientFactory.CreateClient("OrderMicroservice");
-
-            var responseOrder = await OrderHttpClient.GetAsync("Order/user/1");
-            var responseProduct = await ProductHttpClient.GetAsync("api/products");
-
-            if (responseProduct.IsSuccessStatusCode)
+            try
             {
-                var response = await responseProduct.Content.ReadAsStringAsync();
-                _logger.LogInformation(response);
-                products = JsonConvert.DeserializeObject<List<Product>>(response) ?? new List<Product>();
+                var ProductHttpClient = _httpClientFactory.CreateClient("ProductMicroservice");
+                var OrderHttpClient = _httpClientFactory.CreateClient("OrderMicroservice");
 
+                var responseOrder = await OrderHttpClient.GetAsync("Order/user/1");
+                var responseProduct = await ProductHttpClient.GetAsync("api/products");
+
+                if (responseProduct.IsSuccessStatusCode)
+                {
+                    var response = await responseProduct.Content.ReadAsStringAsync();
+                    _logger.LogInformation(response);
+                    products = JsonConvert.DeserializeObject<List<Product>>(response) ?? new List<Product>();
+
+                }
+
+                if (responseOrder.IsSuccessStatusCode)
+                {
+                    var response = await responseOrder.Content.ReadAsStringAsync();
+                    _logger.LogInformation(response);
+                    orders = JsonConvert.DeserializeObject<List<Order>>(response) ?? new List<Order>();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
 
-            if (responseOrder.IsSuccessStatusCode)
-            {
-                var response = await responseOrder.Content.ReadAsStringAsync();
-                _logger.LogInformation(response);
-                orders = JsonConvert.DeserializeObject<List<Order>>(response) ?? new List<Order>();
-            }
             return Page();
         }
         public Product? GetProductById(int productId)
@@ -49,10 +57,18 @@ namespace Lab.APIGateway.Pages
         }
         public async Task<User?> GetUserById(int userId)
         {
-            var UserHttpClient = _httpClientFactory.CreateClient("UserMicroservice");
-            var responseUser = await UserHttpClient.GetAsync(requestUri: "api/users/" + userId);
-            var response = await responseUser.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<User>(response);
+            try
+            {
+                var UserHttpClient = _httpClientFactory.CreateClient("UserMicroservice");
+                var responseUser = await UserHttpClient.GetAsync(requestUri: "api/users/" + userId);
+                var response = await responseUser.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<User>(response);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return null;
         }
        
     }

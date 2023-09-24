@@ -13,20 +13,27 @@
     {
         ViewData["Title"] = "Orders";
         <h1>@ViewData["Title"]</h1>
-        @foreach (var order in @Model.orders)
+        @if (@Model.orders != null)
         {
-            @if (order.ProductIds != null)
+            @foreach (var order in @Model.orders)
             {
-                <p>Products in order</p>
-                <ul>
-                    @foreach (var productId in order.ProductIds)
-                    {
-                        <li>@Model.GetProductById(productId)?.Name</li>
-                    }
-                </ul>
+                @if (order.ProductIds != null)
+                {
+                    <p>Products in order</p>
+                    <ul>
+                        @foreach (var productId in order.ProductIds)
+                        {
+                            <li>@Model.GetProductById(productId)?.Name</li>
+                        }
+                    </ul>
+                }
+                <p>User name: @Model.GetUserById(order.OrderId).Result?.Name</p>
+                <p>User age: @Model.GetUserById(order.OrderId).Result?.Age</p>
             }
-            <p>User name: @Model.GetUserById(order.OrderId).Result?.Name</p>
-            <p>User age: @Model.GetUserById(order.OrderId).Result?.Age</p>
+        }
+        else
+        {
+            <p>No orders</p>
         }
 
     }
