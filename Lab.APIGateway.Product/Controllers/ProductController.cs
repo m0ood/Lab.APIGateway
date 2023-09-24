@@ -15,7 +15,7 @@ namespace Lab.APIGateway.Product.Controllers
         }
 
         [HttpGet("{productId}")]
-         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetProductById(int productId)
@@ -33,6 +33,13 @@ namespace Lab.APIGateway.Product.Controllers
             }
 
             return Ok(product);
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult GetProducts()
+        {
+            return Ok(productService.GetProducts());
         }
     }
 }

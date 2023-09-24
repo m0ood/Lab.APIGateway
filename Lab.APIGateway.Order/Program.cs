@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProductService API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "OrderService API", Version = "v1" });
 });
 
 builder.Services.AddSingleton<IOrderService, OrderService>();
@@ -23,7 +23,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProductService API V1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "OrderService API V1");
     });
 }
 

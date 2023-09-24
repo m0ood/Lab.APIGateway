@@ -3,5 +3,6 @@
     public interface IProductService
     {
         Product? GetProductById(int userId);
+        List<Product> GetProducts();
     }
 }

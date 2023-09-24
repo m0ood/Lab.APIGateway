@@ -12,5 +12,9 @@
         {
             return users.Find(user => user.ProductId == productId);
         }
+        public List<Product> GetProducts()
+        {
+            return users;
+        }
     }
 }

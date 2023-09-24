@@ -1,0 +1,33 @@
+﻿@page
+@model OrdersModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
+    // Проверяем, выполнена ли аутентификация пользователя
+    if (!SignInManager.IsSignedIn(User))
+    {
+        Response.Redirect("Identity/Account/Login?ReturnUrl=/Orders");
+    }
+    else
+    {
+        ViewData["Title"] = "Orders";
+        <h1>@ViewData["Title"]</h1>
+        @foreach (var order in @Model.orders)
+        {
+            @if (order.ProductIds != null)
+            {
+                <p>Products in order</p>
+                <ul>
+                    @foreach (var productId in order.ProductIds)
+                    {
+                        <li>@Model.GetProductById(productId)?.Name</li>
+                    }
+                </ul>
+            }
+            <p>User name: @Model.GetUserById(order.OrderId).Result?.Name</p>
+            <p>User age: @Model.GetUserById(order.OrderId).Result?.Age</p>
+        }
+
+    }
+}
